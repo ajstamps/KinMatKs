@@ -44,12 +44,12 @@ if __name__ == "__main__":
                      lower_a_arm_color)
 
     # Define left tie rod
-    l_tie_rod = Tierod(Node(-100, -25, 125, 2, tie_rod_color),
-                       Node(-200, -25, 100, 2, tie_rod_color),
+    l_tie_rod = Tierod(Node(-100, -25, 125, 3, tie_rod_color),
+                       Node(-200, -25, 100, 3, tie_rod_color),
                        tie_rod_color)
 
-    r_tie_rod = Tierod(Node(100, -25, 125, 2, tie_rod_color),
-                       Node(200, -25, 100, 2, tie_rod_color),
+    r_tie_rod = Tierod(Node(100, -25, 125, 3, tie_rod_color),
+                       Node(200, -25, 100, 3, tie_rod_color),
                        tie_rod_color)
 
     front_left_corner = Corner([u_l_a_arm, l_l_a_arm, l_tie_rod])

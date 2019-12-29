@@ -43,10 +43,12 @@ def render_cylinder(node1, node2, radius, subdivisions, cyl_color):
 
 def render_point(node, node_color, radius, num_slices):
     quadratic = gluNewQuadric()
+    glPushMatrix()
     gluQuadricOrientation(quadratic, GLU_INSIDE)
     glTranslatef(node.x, node.y, node.z)
     glColor(node_color[0] / 255.0, node_color[1] / 255.0, node_color[2] / 255.0)
     gluSphere(quadratic, radius, num_slices, 10)
+    glPopMatrix()
     gluDeleteQuadric(quadratic)
 
 
