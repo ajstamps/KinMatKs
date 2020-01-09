@@ -20,7 +20,7 @@ class Wireframe:
         print("\n --- edges ---")
         for i, edge in enumerate(self.edges):
             print(" {0}: ({1:2f}, {2:2f}, {3:2f})".format(i, edge.start.x, edge.start.y, edge.start.z))
-            print("to ({0:2f}, {1:2f}, {2:2f})".format(edge.stop.x,  edge.stop.y,  edge.stop.z))
+            print("to ({0:2f}, {1:2f}, {2:2f})".format(edge.stop.x, edge.stop.y, edge.stop.z))
 
     def find_center(self):
         """ Find the centre of the wireframe. """

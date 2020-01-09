@@ -2,8 +2,11 @@
   <dictionary name="alexanderstamps">
     <words>
       <w>aarm</w>
+      <w>modelview</w>
+      <w>opengl</w>
       <w>pygame</w>
       <w>susp</w>
+      <w>texturing</w>
       <w>tierod</w>
       <w>wireframe</w>
       <w>wireframes</w>

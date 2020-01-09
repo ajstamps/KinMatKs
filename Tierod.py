@@ -1,7 +1,7 @@
-from Wireframe import Wireframe
-from Edge import Edge
-from Node import Node
 import math
+
+from Edge import Edge
+from Wireframe import Wireframe
 
 
 class Tierod(Wireframe):
@@ -15,9 +15,11 @@ class Tierod(Wireframe):
 
         self.add_nodes([self.inboard_node, self.outboard_node])
         self.add_edges([self.tie_rod_edge])
-        self.rotation_length = self.outboard_node.dist_between_node(self.inboard_node)
+        self.rotation_length = self.outboard_node.x - self.inboard_node.x
+
+        self.negative_x = False
         if self.outboard_node.x < 0:
-            self.rotation_length *= -1
+            self.negative_x = True
 
         self.inboard_node_store = inboard_node.y
         self.outboard_node_store = outboard_node.y
@@ -25,19 +27,31 @@ class Tierod(Wireframe):
     def bump(self, bump_height):
         bump_dist_x = math.sqrt(math.pow(self.rotation_length, 2) - math.pow(bump_height, 2))
 
-        if self.outboard_node.x < 0:
-            bump_dist_x *= -1
-
-        self.outboard_node.x = (bump_dist_x + self.rotation_length)
+        if self.negative_x:
+            self.outboard_node.x = (-bump_dist_x + self.rotation_length)
+        else:
+            self.outboard_node.x = (bump_dist_x + self.rotation_length)
 
         self.outboard_node.y = (self.outboard_node_store + bump_height)
 
     def squat(self, squat_height):
         squat_dist_x = math.sqrt(math.pow(self.rotation_length, 2) - math.pow(squat_height, 2))
 
-        if self.outboard_node.get_x() < 0:
-            squat_dist_x *= -1
-
-        self.outboard_node.x = (squat_dist_x + self.rotation_length)
+        if self.negative_x:
+            self.outboard_node.x = (-squat_dist_x + self.rotation_length)
+        else:
+            self.outboard_node.x = (squat_dist_x + self.rotation_length)
 
         self.inboard_node.y = (self.inboard_node_store + squat_height)
+
+    def display(self):
+        for edge in self.edges:
+            edge.display()
+
+        for node in self.nodes:
+            node.display()
+        # OpenGLUtils.draw_text(self.outboard_node, "X: {:.1f} Y:{:.1f} Z:{:.1f} Length: {:.2f}"
+        #                       .format(self.outboard_node.x,
+        #                               self.outboard_node.y,
+        #                               self.outboard_node.z,
+        #                               self.outboard_node.dist_between_node(self.inboard_node)))

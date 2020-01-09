@@ -1,5 +1,5 @@
-from Wireframe import Wireframe
 from Edge import Edge
+from Wireframe import Wireframe
 
 
 class Frame(Wireframe):
