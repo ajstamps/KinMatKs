@@ -1,5 +1,8 @@
 import math
 
+from Axis import Axis
+from Node import Node
+
 
 class Plane:
     def __init__(self, a, b, c, d):
@@ -36,3 +39,27 @@ class Plane:
         denominator = math.sqrt(abc1) * math.sqrt(abc2)
 
         return math.acos(numerator/denominator)
+
+    def get_planar_intersect_axis(self, plane_):
+        n1 = self.get_normal()
+        n2 = plane_.get_normal()
+
+        d1 = self.d
+        d2 = plane_.d
+
+        v = n1 * n2
+
+        if v.x == 0 and v.y == 0 and v.z == 0:
+            return Node(None, None, None, 0, (0, 0, 0))
+
+        dot = v.dot(v)
+
+        u1 = n1.scale(d2)
+        u2 = n2.scale(-d1)
+
+        p = ((u1 + u2)*v).scale(1/dot)
+
+        return Axis(v, p)
+
+    def get_normal(self):
+        return Node(self.a, self.b, self.c, 0, (0, 0, 0))

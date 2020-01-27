@@ -1,6 +1,8 @@
+import math
 from CombinedWireframe import CombinedWireframe
 from Tierod import Tierod
 from Tire import Tire
+from Plane import Plane
 
 
 class Corner(CombinedWireframe):
@@ -23,6 +25,10 @@ class Corner(CombinedWireframe):
             a_arm.bump(bump_height)
 
         self.tie_rod.bump(bump_height)
+
+        instant_center = Plane.get_planar_intersect_axis(self.a_arms[0].get_a_arm_plane(),
+                                                         self.a_arms[1].get_a_arm_plane())
+        self.tire.bump(bump_height, instant_center)
 
     def squat(self, squat_height):
         for a_arm in self.a_arms:

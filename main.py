@@ -1,8 +1,6 @@
 from ctypes import c_float
 from time import time
-
 from OpenGL.GLUT import *
-
 from Aarm import Aarm
 from Corner import Corner
 from Frame import Frame
@@ -199,7 +197,7 @@ def init_opengl():
     # lighting
     glEnable(GL_NORMALIZE)
     glEnable(GL_LIGHT0)
-    light_position = [1., 1., 2., 0.]
+    light_position = [0., 10., 10., 0.]
     glLight(GL_LIGHT0, GL_POSITION, light_position)
 
     glEnable(GL_COLOR_MATERIAL)
@@ -239,7 +237,7 @@ def bump():
             bump_step += bump_step_amt
             for (wf_name, wireframe) in wireframes.items():
                 if isinstance(wireframe, Corner):
-                    wireframe.bump(bump_height * math.sin(bump_step * math.pi))
+                    wireframe.bump(bump_height * math.copysign(bump_step_amt, math.sin(bump_step * math.pi)))
 
 
 def squat():
@@ -250,7 +248,7 @@ def squat():
             squat_step += squat_step_amt
             for (wf_name, wireframe) in wireframes.items():
                 if isinstance(wireframe, Corner):
-                    wireframe.squat(squat_height * math.sin(squat_step * math.pi))
+                    wireframe.squat(squat_height * math.copysign(squat_step_amt, math.sin(squat_step * math.pi)))
 
 
 # Resets the bump and squat of the system
@@ -272,7 +270,7 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    origin = Origin()
+    origin = Origin(0, 100, 0)
     upper_a_arm_color = (100, 255, 100)
     lower_a_arm_color = (100, 100, 255)
     tie_rod_color = (255, 100, 255)
@@ -280,48 +278,55 @@ def main(argv=None):
     # ---LEFT CORNER--- #
     # Define upper left a-arm
     # in rear, in front, outboard, color
-    u_l_a_arm = Aarm(Node(-500, 300, -550, 10, upper_a_arm_color),
-                     Node(-500, 250, 550, 10, upper_a_arm_color),
-                     Node(-1200, 250, 100, 10, upper_a_arm_color),
+    u_l_a_arm_outboard = Node(-555, 400, 0, 10, upper_a_arm_color)
+    u_l_a_arm = Aarm(Node(-200, 250, -250, 10, upper_a_arm_color),
+                     Node(-200, 350, 250, 10, upper_a_arm_color),
+                     u_l_a_arm_outboard,
                      upper_a_arm_color)
 
     # Define lower left a-arm
-    l_l_a_arm = Aarm(Node(-500, 50, -550, 10, lower_a_arm_color),
-                     Node(-500, 50, 550, 10, lower_a_arm_color),
-                     Node(-1200, 50, 0, 10, lower_a_arm_color),
+    l_l_a_arm_outboard = Node(-555, 140, 0, 10, lower_a_arm_color)
+    l_l_a_arm = Aarm(Node(-200, 150, -250, 10, lower_a_arm_color),
+                     Node(-200, 150, 250, 10, lower_a_arm_color),
+                     l_l_a_arm_outboard,
                      lower_a_arm_color)
 
-    l_tire_inner_node = Node(-1180, 50, 50, 0, (0, 0, 0))
-    l_tire_outer_node = Node(-1360, 50, 50, 0, (0, 0, 0))
-    l_tire = Tire(l_tire_inner_node, l_tire_outer_node, 0, 0, 177.8, 0.375, 330)
+    l_tie_rod_outboard = Node(-555, 175, 100, 7, tie_rod_color)
+    l_tie_rod = Tierod(Node(-200, 175, 100, 7, tie_rod_color),
+                       l_tie_rod_outboard,
+                       tie_rod_color)
+
+    l_tire_inner_node = Node(-555, 265, 0, 0, (0, 0, 0))
+    l_tire_outer_node = Node(-635, 265, 0, 0, (0, 0, 0))
+    l_tire = Tire(u_l_a_arm_outboard, l_l_a_arm_outboard, l_tie_rod_outboard,
+                  l_tire_inner_node, l_tire_outer_node, 328.9, 533.4)
 
     # ---RIGHT CORNER--- #
     # Define upper right a-arm
-    u_r_a_arm = Aarm(Node(500, 300, -550, 10, upper_a_arm_color),
-                     Node(500, 250, 550, 10, upper_a_arm_color),
-                     Node(1200, 250, 100, 10, upper_a_arm_color),
+    u_r_a_arm_outboard = Node(555, 400, 0, 10, upper_a_arm_color)
+    u_r_a_arm = Aarm(Node(200, 250, -250, 10, upper_a_arm_color),
+                     Node(200, 350, 250, 10, upper_a_arm_color),
+                     u_r_a_arm_outboard,
                      upper_a_arm_color)
 
     # Define lower right a-arm
-    l_r_a_arm = Aarm(Node(500, 50, -550, 10, lower_a_arm_color),
-                     Node(500, 50, 550, 10, lower_a_arm_color),
-                     Node(1200, 50, 0, 10, lower_a_arm_color),
+    l_r_a_arm_outboard = Node(555, 140, 0, 10, lower_a_arm_color)
+    l_r_a_arm = Aarm(Node(200, 150, -250, 10, lower_a_arm_color),
+                     Node(200, 150, 250, 10, lower_a_arm_color),
+                     l_r_a_arm_outboard,
                      lower_a_arm_color)
 
-    r_tire_inner_node = Node(1180, 50, 50, 0, (0, 0, 0))
-    r_tire_outer_node = Node(1360, 50, 50, 0, (0, 0, 0))
-
-    r_tire = Tire(r_tire_inner_node, r_tire_outer_node, 0, 0, 177.8, 0.375, 330)
-
-    # Define left tie rod
-    l_tie_rod = Tierod(Node(-500, 100, 400, 7, tie_rod_color),
-                       Node(-1150, 100, 400, 7, tie_rod_color),
+    r_tie_rod_outboard = Node(555, 175, 100, 7, tie_rod_color)
+    r_tie_rod = Tierod(Node(200, 175, 100, 7, tie_rod_color),
+                       r_tie_rod_outboard,
                        tie_rod_color)
 
-    r_tie_rod = Tierod(Node(500, 100, 400, 7, tie_rod_color),
-                       Node(1150, 100, 400, 7, tie_rod_color),
-                       tie_rod_color)
+    r_tire_inner_node = Node(555, 265, 0, 0, (0, 0, 0))
+    r_tire_outer_node = Node(635, 265, 0, 0, (0, 0, 0))
+    r_tire = Tire(u_r_a_arm_outboard, l_r_a_arm_outboard, r_tie_rod_outboard,
+                  r_tire_inner_node, r_tire_outer_node, 328.9, 533.4)
 
+    # Define Corners
     front_left_corner = Corner([u_l_a_arm, l_l_a_arm, l_tie_rod, l_tire])
     front_right_corner = Corner([u_r_a_arm, l_r_a_arm, r_tie_rod, r_tire])
 

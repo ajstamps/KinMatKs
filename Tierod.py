@@ -1,6 +1,8 @@
 import math
 
+import OpenGLUtils
 from Edge import Edge
+from Node import Node
 from Wireframe import Wireframe
 
 
@@ -25,14 +27,12 @@ class Tierod(Wireframe):
         self.outboard_node_store = outboard_node.y
 
     def bump(self, bump_height):
-        bump_dist_x = math.sqrt(math.pow(self.rotation_length, 2) - math.pow(bump_height, 2))
+        bump_angle = math.asin(bump_height / self.rotation_length)
+        node2 = Node(self.inboard_node.x,
+                     self.inboard_node.y,
+                     self.inboard_node.z + 1, 0, (0, 0, 0))
 
-        if self.negative_x:
-            self.outboard_node.x = (-bump_dist_x + self.rotation_length)
-        else:
-            self.outboard_node.x = (bump_dist_x + self.rotation_length)
-
-        self.outboard_node.y = (self.outboard_node_store + bump_height)
+        OpenGLUtils.rotate_node_formula(self.outboard_node, node2, self.inboard_node, bump_angle)
 
     def squat(self, squat_height):
         squat_dist_x = math.sqrt(math.pow(self.rotation_length, 2) - math.pow(squat_height, 2))
