@@ -1,7 +1,7 @@
 # KinMatKs
 KinMatKs is my attempt at making a vehicle dynamics Kinematics Simulation program.
 
-![A picture of the software running](https://github.com/ajstamps/KinMatKs/blob/main/ProgStart.png?raw=true)
+![A picture of the software running](https://raw.githubusercontent.com/ajstamps/KinMatKs/master/ProjDocs/ProgStart.png)
 
 Current functionality includes:
 
