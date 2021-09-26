@@ -1,6 +1,8 @@
 # KinMatKs
 KinMatKs is my attempt at making a vehicle dynamics Kinematics Simulation program.
 
+![A picture of the software running](https://github.com/ajstamps/KinMatKs/blob/main/ProgStart.png?raw=true)
+
 Current functionality includes:
 
 * Squat - Press S to make the vehicle squat (not currently working, math is hard)
