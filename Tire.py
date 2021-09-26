@@ -1,5 +1,4 @@
 import math
-
 import OpenGLUtils
 from Plane import Plane
 from Wireframe import Wireframe
@@ -14,18 +13,11 @@ class Tire(Wireframe):
         self.tie_rod_node = tie_rod_node
         self.inner_node = inner_node
         self.outer_node = outer_node
-        self.dist_between_a_arms = self.upper_a_arm_node.dist_between_node(self.lower_a_arm_node)
         self.width = inner_node.dist_between_node(outer_node)
         self.wheel_diameter = wheel_diameter
         self.rim_diameter = rim_diameter
 
         self.add_nodes([self.upper_a_arm_node, self.lower_a_arm_node, self.tie_rod_node])
-
-    # def get_camber(self):
-    #     return self.dynamic_camber_theta
-    #
-    # def get_toe(self):
-    #     return self.dynamic_toe_theta
 
     def display(self):
         OpenGLUtils.draw_tire(self.inner_node, self.outer_node,

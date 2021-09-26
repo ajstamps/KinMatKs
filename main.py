@@ -35,7 +35,7 @@ squat_step, bump_step = 0.0, 0.0
 
 squat_step_amt, bump_step_amt = 0.01, 0.01
 
-squat_height, bump_height = 25.0, 25.0
+squat_height, bump_height = 200.0, 200.0
 
 squat_time, bump_time = time(), time()
 
@@ -248,7 +248,9 @@ def squat():
             squat_step += squat_step_amt
             for (wf_name, wireframe) in wireframes.items():
                 if isinstance(wireframe, Corner):
-                    wireframe.squat(squat_height * math.copysign(squat_step_amt, math.sin(squat_step * math.pi)))
+                    copy_sign_output = math.copysign(squat_step_amt, math.sin(squat_step * math.pi))
+                    temp_squat_height = squat_height * copy_sign_output
+                    wireframe.squat(temp_squat_height)
 
 
 # Resets the bump and squat of the system
@@ -279,8 +281,8 @@ def main(argv=None):
     # Define upper left a-arm
     # in rear, in front, outboard, color
     u_l_a_arm_outboard = Node(-555, 400, 0, 10, upper_a_arm_color)
-    u_l_a_arm = Aarm(Node(-200, 250, -250, 10, upper_a_arm_color),
-                     Node(-200, 350, 250, 10, upper_a_arm_color),
+    u_l_a_arm = Aarm(Node(-200, 375, -250, 10, upper_a_arm_color),
+                     Node(-200, 375, 250, 10, upper_a_arm_color),
                      u_l_a_arm_outboard,
                      upper_a_arm_color)
 
@@ -304,8 +306,8 @@ def main(argv=None):
     # ---RIGHT CORNER--- #
     # Define upper right a-arm
     u_r_a_arm_outboard = Node(555, 400, 0, 10, upper_a_arm_color)
-    u_r_a_arm = Aarm(Node(200, 250, -250, 10, upper_a_arm_color),
-                     Node(200, 350, 250, 10, upper_a_arm_color),
+    u_r_a_arm = Aarm(Node(200, 375, -250, 10, upper_a_arm_color),
+                     Node(200, 375, 250, 10, upper_a_arm_color),
                      u_r_a_arm_outboard,
                      upper_a_arm_color)
 

@@ -38,15 +38,24 @@ class Aarm(Wireframe):
                                         self.inboard_rear_node, bump_angle)
 
     def squat(self, squat_height):
-        squat_dist_x = math.sqrt(math.pow(self.rotation_length, 2) - math.pow(squat_height, 2))
+        # TODO FIX THIS SHITE
+        # squat_dist_x = math.sqrt(math.pow(self.rotation_length, 2) - math.pow(squat_height, 2))
+        #
+        # if self.outboard_node.x < 0:
+        #     squat_dist_x *= -1
+        #
+        # self.outboard_node.x = (squat_dist_x + self.rotation_length)
+        #
+        # self.inboard_rear_node.y = (self.inboard_rear_node_store + squat_height)
+        # self.inboard_front_node.y = (self.inboard_front_node_store + squat_height)
 
-        if self.outboard_node.x < 0:
-            squat_dist_x *= -1
+        bump_angle = math.asin(squat_height / self.rotation_length)
+        axis = self.get_a_arm_axis()
+        axis.point = self.outboard_node
 
-        self.outboard_node.x = (squat_dist_x + self.rotation_length)
+        OpenGLUtils.rotate_node_formula_axis(self.inboard_front_node, axis, bump_angle)
+        OpenGLUtils.rotate_node_formula_axis(self.inboard_rear_node, axis, bump_angle)
 
-        self.inboard_rear_node.y = (self.inboard_rear_node_store + squat_height)
-        self.inboard_front_node.y = (self.inboard_front_node_store + squat_height)
 
     def get_a_arm_plane(self):
         return Plane.plane_from_3_points(self.inboard_rear_node, self.inboard_front_node, self.outboard_node)
